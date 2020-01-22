@@ -47,12 +47,25 @@ auditpol.exe /get /category:* | Out-File .\Build-Spy.report -Append
 Write-Host "*DONE*" -ForegroundColor Black -BackgroundColor Green
 Write-Output ""
 Write-Output "---------------------------------------------------------------------------------" | Tee-Object -FilePath .\Build-Spy.Report -Append
+Write-Output "UAC Status" | Tee-Object -FilePath .\Build-Spy.Report -Append
+Write-Output "---------------------------------------------------------------------------------" | Tee-Object -FilePath .\Build-Spy.Report -Append
+$uacquery = REG QUERY HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ /v EnableLUA
+if ($uacquery -match "0x1")
+{
+    Write-Output "UAC is Enabled" | Out-File .\Build-Spy.Report -Append
+}
+else {
+    Write-Output "UAC is Disabled" | Out-File .\Build-Spy.Report -Append
+}
+Write-Host "*DONE*" -ForegroundColor Black -BackgroundColor Green
+Write-Output ""
+Write-Output "---------------------------------------------------------------------------------" | Tee-Object -FilePath .\Build-Spy.Report -Append
 Write-Output "Plaintext Passwords in Registry" | Tee-Object -FilePath .\Build-Spy.Report -Append
 Write-Output "---------------------------------------------------------------------------------" | Tee-Object -FilePath .\Build-Spy.Report -Append
 reg query HKLM /f password /t REG_SZ /s | Out-File .\Build-Spy.report -Append
 reg query HKCU /f password /t REG_SZ /s | Out-File .\Build-Spy.report -Append
 Write-Host "*DONE*" -ForegroundColor Black -BackgroundColor Green
 Write-Host ""
-Write-Host "Script completed, please see your Build-Spy Report"
+-Host "Script completed, please see your Build-Spy Report"
 notepad.exe .\Build-Spy.Report
 Write-Host ""
