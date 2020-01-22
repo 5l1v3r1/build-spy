@@ -66,6 +66,6 @@ reg query HKLM /f password /t REG_SZ /s | Out-File .\Build-Spy.report -Append
 reg query HKCU /f password /t REG_SZ /s | Out-File .\Build-Spy.report -Append
 Write-Host "*DONE*" -ForegroundColor Black -BackgroundColor Green
 Write-Host ""
--Host "Script completed, please see your Build-Spy Report"
+Write-Host "Script completed, please see your Build-Spy Report"
 notepad.exe .\Build-Spy.Report
 Write-Host ""
