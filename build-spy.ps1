@@ -74,7 +74,13 @@ Write-Output "Installed Software" | Tee-Object -FilePath .\Build-Spy.Report -App
 Write-Output "---------------------------------------------------------------------------------" | Tee-Object -FilePath .\Build-Spy.Report -Append
 wmic product get name,version | findstr /r /v "^$" | Out-File .\Build-Spy.Report -Append
 Write-Host "*DONE*" -ForegroundColor Black -BackgroundColor Green
-Write-Host ""
+Write-Output ""
+Write-Output "---------------------------------------------------------------------------------" | Tee-Object -FilePath .\Build-Spy.Report -Append
+Write-Output "Firewall Rules" | Tee-Object -FilePath .\Build-Spy.Report -Append
+Write-Output "---------------------------------------------------------------------------------" | Tee-Object -FilePath .\Build-Spy.Report -Append
+Get-NetFirewallRule | Format-List -Property Name, DisplayName, Description, DisplayGroup, Enabled, Profile, Action | Out-File .\Build-Spy.Report -Append
+Write-Host "*DONE*" -ForegroundColor Black -BackgroundColor Green
+Write-Output ""
 Write-Host "Script completed at $getdate, Please see your Build-Spy Report"
 notepad.exe .\Build-Spy.Report
 Write-Host ""
