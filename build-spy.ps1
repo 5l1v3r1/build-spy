@@ -1,5 +1,24 @@
+# Build-Spy - Version 0.1 - James Smith (@osiris2600)
+# Build-Spy is a quick and dirty Powershell script to aid in information gathering when performing on-host build reviews as part of a penetration testing engagement.
+# When on an engagement that has build-reviews in scope a lot of manual checks are normally performed such as does the machine have the on-host firewall enabled, 
+# is UAC enabled etc. This can sometimes be a time consuming task. So I decided to create this script which will dump the information into a text file for easy viewing.
+
 Clear-Host
 $getDate = Get-Date
+
+# Elevate Script via UAC Prompt, credit to Sycnex for the method.
+If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]'Administrator')) {
+    Write-Host "You didn't run this script as an Administrator. This script will self elevate to run as an Administrator and continue."
+    Start-Sleep 1
+    Write-Host "                                               3"
+    Start-Sleep 1
+    Write-Host "                                               2"
+    Start-Sleep 1
+    Write-Host "                                               1"
+    Start-Sleep 1
+    Start-Process powershell.exe -ArgumentList ("-NoProfile -ExecutionPolicy Bypass -File `"{0}`"" -f $PSCommandPath) -Verb RunAs
+    Exit
+}
 
 
 "---------------------------------------------------------------------------------" | Tee-Object -FilePath .\Build-Spy.Report
